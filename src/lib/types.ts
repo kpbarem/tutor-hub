@@ -5,7 +5,7 @@ export type Student = {
   timezone: string;
   language: string;
   level: string;
-  nextLesson: string;
+  nextLesson?: string;
   balance: number;
   avatar: string;
 };
