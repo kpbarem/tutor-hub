@@ -40,7 +40,7 @@ export default async function CalendarPage({
 
   const { data: lessons } = await supabase
     .from("lessons")
-    .select("id, starts_at, topic, students(name)")
+    .select("id, starts_at, topic, video_room_url, students(name)")
     .eq("tutor_account_id", tutorAccountId)
     .gte("starts_at", weekStart.toISOString())
     .lte("starts_at", weekEnd.toISOString())

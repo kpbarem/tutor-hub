@@ -3,6 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getStudentRecord } from "@/lib/get-student-record";
 import { toggleHomeworkStatusStudent } from "./actions";
+import { HomeworkUpload } from "@/components/homework-upload";
 
 export default async function PortalHomeworkPage() {
   const supabase = await createClient();
@@ -11,7 +12,7 @@ export default async function PortalHomeworkPage() {
 
   const { data: homework } = await supabase
     .from("homework")
-    .select("id, title, description, due_date, status")
+    .select("id, title, description, due_date, status, submission_path")
     .eq("student_id", student.id)
     .order("created_at", { ascending: false });
 
@@ -41,6 +42,10 @@ export default async function PortalHomeworkPage() {
                       Due {new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(new Date(hw.due_date))}
                     </p>
                   )}
+                  <HomeworkUpload
+                    homeworkId={hw.id}
+                    currentFileName={hw.submission_path ? hw.submission_path.split("/").slice(1).join("/") : null}
+                  />
                 </div>
                 <form
                   action={async () => {

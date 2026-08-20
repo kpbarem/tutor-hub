@@ -24,7 +24,7 @@ export default async function DashboardPage() {
 
   const { data: upcomingLessons } = await supabase
     .from("lessons")
-    .select("id, starts_at, topic, students(name)")
+    .select("id, starts_at, topic, video_room_url, students(name)")
     .eq("tutor_account_id", tutorAccountId)
     .gte("starts_at", new Date().toISOString())
     .order("starts_at", { ascending: true })
@@ -126,9 +126,16 @@ export default async function DashboardPage() {
                       <p className="font-semibold">{studentName}</p>
                       {lesson.topic && <p className="truncate text-sm text-slate-500">{lesson.topic}</p>}
                     </div>
-                    <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
-                      Confirmed
-                    </span>
+                    <div className="flex flex-col items-end gap-1.5">
+                      <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+                        Confirmed
+                      </span>
+                      {lesson.video_room_url && (
+                        <Link href={`/dashboard/lessons/${lesson.id}/call`} className="text-xs font-semibold text-blue-800 hover:text-blue-900">
+                          Join call →
+                        </Link>
+                      )}
+                    </div>
                   </div>
                 );
               })

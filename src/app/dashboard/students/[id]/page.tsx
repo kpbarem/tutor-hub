@@ -41,9 +41,22 @@ export default async function StudentPage({
     .reduce((sum, p) => sum + p.amount_cents, 0);
   const { data: homework } = await supabase
     .from("homework")
-    .select("id, title, description, due_date, status")
+    .select("id, title, description, due_date, status, submission_path")
     .eq("student_id", id)
     .order("created_at", { ascending: false });
+
+  const homeworkWithUrls = await Promise.all(
+    (homework ?? []).map(async (hw) => {
+      let submissionUrl: string | null = null;
+      if (hw.submission_path) {
+        const { data } = await supabase.storage
+          .from("homework-submissions")
+          .createSignedUrl(hw.submission_path, 60 * 60); // valid for 1 hour
+        submissionUrl = data?.signedUrl ?? null;
+      }
+      return { ...hw, submissionUrl };
+    })
+  );
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
@@ -129,7 +142,7 @@ export default async function StudentPage({
               {!homework || homework.length === 0 ? (
                 <p className="text-sm text-slate-500">No homework assigned yet.</p>
               ) : (
-                homework.map((hw) => (
+                homeworkWithUrls.map((hw) => (
                   <div key={hw.id} className="rounded-xl bg-slate-50 p-4">
                     <div className="flex items-start justify-between gap-3">
                       <div>
@@ -141,6 +154,16 @@ export default async function StudentPage({
                           <p className="mt-1 text-xs text-slate-400">
                             Due {new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(new Date(hw.due_date))}
                           </p>
+                        )}
+                        {hw.submissionUrl && (
+                          <a
+                            href={hw.submissionUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mt-2 inline-block text-xs font-semibold text-blue-800 hover:text-blue-900"
+                          >
+                            View submission →
+                          </a>
                         )}
                       </div>
                       <form
@@ -265,7 +288,7 @@ export default async function StudentPage({
             <InviteButton studentId={student.id} email={student.email} />
           </section>
         </div>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 }

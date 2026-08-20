@@ -10,7 +10,7 @@ export default async function PortalPage() {
 
     const { data: upcomingLessons } = await supabase
         .from("lessons")
-        .select("id, starts_at, topic")
+        .select("id, starts_at, topic, video_room_url")
         .eq("student_id", student.id)
         .gte("starts_at", new Date().toISOString())
         .order("starts_at", { ascending: true })
@@ -38,6 +38,14 @@ export default async function PortalPage() {
                             ? new Intl.DateTimeFormat("en-US", { weekday: "long", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }).format(new Date(upcomingLessons[0].starts_at))
                             : "No lessons scheduled yet"}
                     </p>
+                    {upcomingLessons && upcomingLessons.length > 0 && upcomingLessons[0].video_room_url && (
+                        <Link
+                            href={`/portal/lessons/${upcomingLessons[0].id}/call`}
+                            className="mt-3 inline-block text-sm font-semibold text-blue-800 hover:text-blue-900"
+                        >
+                            Join call →
+                        </Link>
+                    )}
                 </div>
 
                 <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
