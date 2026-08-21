@@ -51,6 +51,15 @@ export async function POST(request: NextRequest) {
         .eq("external_reference", session.id);
       break;
     }
+    case "account.updated": {
+      const account = event.data.object as Stripe.Account;
+
+      await supabase
+        .from("tutor_accounts")
+        .update({ stripe_payouts_enabled: account.payouts_enabled ?? false })
+        .eq("stripe_connect_account_id", account.id);
+      break;
+    }
 
     default:
       // Other event types are ignored for now.

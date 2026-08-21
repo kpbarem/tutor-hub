@@ -26,7 +26,7 @@ export function Sidebar() {
         ))}
       </nav>
       <div className="mt-auto">
-        <Link href="/dashboard" className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100">
+        <Link href="/dashboard/settings" className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100">
           <Settings size={18} /> Settings
         </Link>
         <form action={signOut}>

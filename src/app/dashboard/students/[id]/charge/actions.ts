@@ -6,10 +6,22 @@ import { stripe } from "@/lib/stripe";
 import { createClient } from "@/lib/supabase/server";
 import { getTutorAccountId } from "@/lib/get-tutor-account";
 
+const PLATFORM_FEE_PERCENT = 0;
+
 export async function createPaymentRequest(formData: FormData) {
   const supabase = await createClient();
   const tutorAccountId = await getTutorAccountId(supabase);
   if (!tutorAccountId) redirect("/login");
+
+  const { data: tutorAccount } = await supabase
+    .from("tutor_accounts")
+    .select("stripe_connect_account_id, stripe_payouts_enabled")
+    .eq("id", tutorAccountId)
+    .single();
+
+  if (!tutorAccount?.stripe_connect_account_id || !tutorAccount.stripe_payouts_enabled) {
+    throw new Error("Connect your Stripe account in Settings before requesting payments.");
+  }
 
   const studentId = formData.get("studentId") as string;
   const amountDollars = Number(formData.get("amount"));
@@ -25,6 +37,7 @@ export async function createPaymentRequest(formData: FormData) {
 
   const headersList = await headers();
   const origin = process.env.NEXT_PUBLIC_SITE_URL ?? `http://${headersList.get("host")}`;
+  const applicationFeeAmount = Math.round(amountCents * PLATFORM_FEE_PERCENT);
 
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
@@ -39,6 +52,12 @@ export async function createPaymentRequest(formData: FormData) {
       },
     ],
     customer_email: student.email,
+    payment_intent_data: {
+      transfer_data: {
+        destination: tutorAccount.stripe_connect_account_id,
+      },
+      ...(applicationFeeAmount > 0 ? { application_fee_amount: applicationFeeAmount } : {}),
+    },
     success_url: `${origin}/dashboard/students/${studentId}?payment=success`,
     cancel_url: `${origin}/dashboard/students/${studentId}?payment=cancelled`,
   });
@@ -55,5 +74,5 @@ export async function createPaymentRequest(formData: FormData) {
 
   if (error) throw new Error(error.message);
 
-    redirect(`/dashboard/students/${studentId}?payment=link&url=${encodeURIComponent(session.url!)}`);
+  redirect(`/dashboard/students/${studentId}?payment=link&url=${encodeURIComponent(session.url!)}`);
 }
