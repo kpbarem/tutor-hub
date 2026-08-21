@@ -14,9 +14,13 @@ export default async function DashboardLayout({ children }: { children: ReactNod
   // Does this user already have a profile?
   const { data: profile } = await supabase
     .from("profiles")
-    .select("id")
+    .select("id, role")
     .eq("id", user.id)
     .single();
+
+  if (profile && profile.role === "student") {
+    redirect("/portal");
+  }
 
   if (!profile) {
     // First login ever — create their profile + tutor account
