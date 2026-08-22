@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { linkStudentAccount } from "./actions";
 
 export default function PortalLoginPage() {
   const router = useRouter();
@@ -16,23 +17,42 @@ export default function PortalLoginPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+
     setError(null);
     setLoading(true);
 
-    const { error } =
+    const normalizedEmail = email.trim().toLowerCase();
+
+    const { error: authError } =
       mode === "signin"
-        ? await supabase.auth.signInWithPassword({ email, password })
-        : await supabase.auth.signUp({ email, password });
+        ? await supabase.auth.signInWithPassword({
+          email: normalizedEmail,
+          password,
+        })
+        : await supabase.auth.signUp({
+          email: normalizedEmail,
+          password,
+        });
 
-    setLoading(false);
-
-    if (error) {
-      setError(error.message);
+    if (authError) {
+      setLoading(false);
+      setError(authError.message);
       return;
     }
 
-    router.push("/portal");
-    router.refresh();
+    const result = await linkStudentAccount();
+
+    if (!result.success) {
+      setLoading(false);
+      setError(result.message ?? "Could not link student account.");
+      return;
+    }
+
+    setLoading(false);
+
+    // router.push("/portal");
+    // router.refresh();
+    window.location.href = "/portal";
   }
 
   return (

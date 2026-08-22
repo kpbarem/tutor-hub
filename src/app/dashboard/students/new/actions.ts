@@ -14,7 +14,7 @@ export async function createStudent(formData: FormData) {
   }
 
   const name = formData.get("name") as string;
-  const email = formData.get("email") as string;
+  const email = (formData.get("email") as string).trim().toLowerCase();
   const timezone = formData.get("timezone") as string;
   const goals = formData.get("goals") as string;
 
