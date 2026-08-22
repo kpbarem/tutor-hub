@@ -10,10 +10,27 @@ import { createClient as createSupabaseClient } from "@supabase/supabase-js";
  * scoped to "the current user's own data" — use the regular server client
  * (src/lib/supabase/server.ts) for that, so RLS keeps doing its job.
  */
+import { createClient } from "@supabase/supabase-js";
+
 export function createAdminClient() {
-  return createSupabaseClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SECRET_KEY!,
-    { auth: { autoRefreshToken: false, persistSession: false } }
-  );
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
+
+  const rawSecretKey = process.env.SUPABASE_SECRET_KEY;
+
+  const secretKey = rawSecretKey?.replace(/\s+/g, "");
+
+  if (!url) {
+    throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL");
+  }
+
+  if (!secretKey) {
+    throw new Error("Missing SUPABASE_SECRET_KEY");
+  }
+
+  return createClient(url, secretKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+    },
+  });
 }
