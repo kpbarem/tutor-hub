@@ -30,7 +30,11 @@ export default async function DashboardLayout({ children }: { children: ReactNod
       display_name: user.email?.split("@")[0] ?? "Tutor",
     });
 
-    if (profileError) {
+    // Postgres error 23505 = unique constraint violation. If this fired because
+    // the profile already exists (e.g. two requests raced to create it), that's
+    // totally fine — someone just beat us to it by a split second. Only log
+    // anything genuinely unexpected.
+    if (profileError && profileError.code !== "23505") {
       console.error("Failed to create profile:", profileError.message);
     }
 

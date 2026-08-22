@@ -13,10 +13,47 @@ export default async function PortalLayout({ children }: { children: ReactNode }
     redirect("/portal/login");
   }
 
-  const student = await getStudentRecord(supabase);
+  const { data: ownProfile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
+  if (ownProfile?.role === "tutor") {
+    redirect("/dashboard");
+  }
+
+  let student = await getStudentRecord(supabase);
 
   if (!student) {
-    // Logged in, but not linked to any student record — not a valid portal user.
+    // First time this login has ever reached the portal: make sure a
+    // profile exists, then try to claim a matching, unclaimed student row.
+    const { data: existingProfile } = await supabase
+      .from("profiles")
+      .select("id")
+      .eq("id", user.id)
+      .single();
+
+    if (!existingProfile) {
+      await supabase.from("profiles").insert({
+        id: user.id,
+        role: "student",
+        display_name: user.email?.split("@")[0] ?? "Student",
+      });
+    }
+
+    if (user.email) {
+      await supabase
+        .from("students")
+        .update({ profile_id: user.id })
+        .eq("email", user.email)
+        .is("profile_id", null);
+    }
+
+    student = await getStudentRecord(supabase);
+  }
+
+  if (!student) {
     redirect("/portal/login");
   }
 
