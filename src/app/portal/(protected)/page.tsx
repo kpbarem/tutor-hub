@@ -89,6 +89,12 @@ export default async function PortalPage() {
                 <MessageCircle size={18} /> Message your tutor
             </Link>
             <Link
+                href="/portal/schedule"
+                className="flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-4 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+            >
+                Schedule a lesson
+            </Link>
+            <Link
                 href="/portal/homework"
                 className="flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-4 text-sm font-semibold text-slate-700 hover:bg-slate-50"
             >

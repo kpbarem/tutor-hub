@@ -77,9 +77,12 @@ export default async function StudentPage({
               <span className="flex items-center gap-1.5"><MapPin size={15} />{student.timezone}</span>
             </div>
           </div>
-          <button className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold">
+          <Link
+            href={`/dashboard/students/${student.id}/edit`}
+            className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold"
+          >
             <Pencil size={16} /> Edit
-          </button>
+          </Link>
           <Link
             href={`/dashboard/students/${student.id}/messages`}
             className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-800 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-900"
@@ -285,7 +288,12 @@ export default async function StudentPage({
             <p className="mt-2 text-sm leading-6 text-blue-100">
               Give this student access to upcoming lessons, homework, files, and payment history.
             </p>
-            <InviteButton studentId={student.id} email={student.email} />
+            <div className="space-y-2">
+              <p className="text-xs text-blue-100">
+                Share this link, and tell them to sign up with: <span className="font-semibold">{student.email}</span>
+              </p>
+              <CopyLinkButton url={`${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/portal/login`} />
+            </div>
           </section>
         </div>
       </div >
