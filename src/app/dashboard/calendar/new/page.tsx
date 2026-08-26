@@ -2,6 +2,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { getTutorAccountId } from "@/lib/get-tutor-account";
 import { createLesson } from "./actions";
+import { LessonDateTimeFields } from "@/components/lesson-datetime-fields";
 
 export default async function NewLessonPage() {
   const supabase = await createClient();
@@ -51,24 +52,7 @@ export default async function NewLessonPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="date" className="block text-sm font-semibold text-slate-700">
-                  Date
-                </label>
-                <input
-                  id="date" name="date" type="date" required
-                  className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100"
-                />
-              </div>
-              <div>
-                <label htmlFor="time" className="block text-sm font-semibold text-slate-700">
-                  Start time
-                </label>
-                <input
-                  id="time" name="time" type="time" required
-                  className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100"
-                />
-              </div>
+              <LessonDateTimeFields />
             </div>
 
             <div>
