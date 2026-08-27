@@ -73,9 +73,16 @@ export default async function PortalPage() {
                                     </p>
                                     {lesson.topic && <p className="text-sm text-slate-500">{lesson.topic}</p>}
                                 </div>
-                                <p className="text-sm text-slate-500">
-                                    {new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit" }).format(new Date(lesson.starts_at))}
-                                </p>
+                                <div className="flex flex-col items-end gap-1">
+                                    <p className="text-sm text-slate-500">
+                                        {new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit" }).format(new Date(lesson.starts_at))}
+                                    </p>
+                                    {lesson.video_room_url && (
+                                        <Link href={`/portal/lessons/${lesson.id}/call`} className="text-xs font-semibold text-blue-800 hover:text-blue-900">
+                                            Join call →
+                                        </Link>
+                                    )}
+                                </div>
                             </div>
                         ))
                     )}
