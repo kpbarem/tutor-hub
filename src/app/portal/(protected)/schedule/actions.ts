@@ -60,7 +60,16 @@ export async function createLessonAsStudent(formData: FormData) {
         if (roomResponse.ok) {
             const room = await roomResponse.json();
             console.log("Daily room created:", room.url);
-            await supabase.from("lessons").update({ video_room_url: room.url }).eq("id", lesson.id);
+            const { error: updateError } = await supabase
+                .from("lessons")
+                .update({ video_room_url: room.url })
+                .eq("id", lesson.id);
+
+            if (updateError) {
+                console.error("Failed to save video_room_url:", updateError.message);
+            } else {
+                console.log("Successfully saved video_room_url to lesson", lesson.id);
+            }
         } else {
             console.error("Daily room creation failed:", await roomResponse.text());
         }
