@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { stripe } from "@/lib/stripe";
 import { createClient } from "@/lib/supabase/server";
@@ -48,4 +49,27 @@ export async function connectStripeAccount() {
   });
 
   redirect(accountLink.url);
+}
+
+export async function updateTutorTimezone(timezone: string) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+
+  const { data: updatedRows, error } = await supabase
+    .from("profiles")
+    .update({ timezone })
+    .eq("id", user.id)
+    .select("id");
+
+  if (error) {
+    console.error("Failed to update tutor timezone:", error.message);
+    throw new Error(error.message);
+  }
+  if (!updatedRows || updatedRows.length === 0) {
+    console.error("Tutor timezone update matched ZERO rows");
+    throw new Error("Update didn't apply — no matching row found.");
+  }
+
+  revalidatePath("/dashboard/settings");
 }

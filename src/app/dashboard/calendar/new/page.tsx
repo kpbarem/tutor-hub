@@ -51,9 +51,9 @@ export default async function NewLessonPage() {
               </select>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <LessonDateTimeFields />
-            </div>
+
+            <LessonDateTimeFields />
+
 
             <div>
               <label htmlFor="duration" className="block text-sm font-semibold text-slate-700">

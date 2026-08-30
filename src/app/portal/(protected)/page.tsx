@@ -2,6 +2,7 @@ import Link from "next/link";
 import { CalendarDays, MessageCircle, WalletCards, BookOpen } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getStudentRecord } from "@/lib/get-student-record";
+import { formatInTimezone } from "@/lib/format-in-timezone";
 
 export default async function PortalPage() {
     const supabase = await createClient();
@@ -35,7 +36,7 @@ export default async function PortalPage() {
                     </div>
                     <p className="mt-3 text-sm text-slate-600">
                         {upcomingLessons && upcomingLessons.length > 0
-                            ? new Intl.DateTimeFormat("en-US", { weekday: "long", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }).format(new Date(upcomingLessons[0].starts_at))
+                            ? formatInTimezone(new Date(upcomingLessons[0].starts_at), student.timezone, { weekday: "long", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })
                             : "No lessons scheduled yet"}
                     </p>
                     {upcomingLessons && upcomingLessons.length > 0 && upcomingLessons[0].video_room_url && (
@@ -69,13 +70,13 @@ export default async function PortalPage() {
                             <div key={lesson.id} className="flex items-center justify-between p-5">
                                 <div>
                                     <p className="font-semibold">
-                                        {new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short", day: "numeric" }).format(new Date(lesson.starts_at))}
+                                        {formatInTimezone(new Date(lesson.starts_at), student.timezone, { weekday: "short", month: "short", day: "numeric" })}
                                     </p>
                                     {lesson.topic && <p className="text-sm text-slate-500">{lesson.topic}</p>}
                                 </div>
                                 <div className="flex flex-col items-end gap-1">
                                     <p className="text-sm text-slate-500">
-                                        {new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit" }).format(new Date(lesson.starts_at))}
+                                        {formatInTimezone(new Date(lesson.starts_at), student.timezone, { hour: "numeric", minute: "2-digit" })}
                                     </p>
                                     {lesson.video_room_url && (
                                         <Link href={`/portal/lessons/${lesson.id}/call`} className="text-xs font-semibold text-blue-800 hover:text-blue-900">
@@ -106,6 +107,12 @@ export default async function PortalPage() {
                 className="flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-4 text-sm font-semibold text-slate-700 hover:bg-slate-50"
             >
                 <BookOpen size={18} /> View homework
+            </Link>
+            <Link
+                href="/portal/settings"
+                className="flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-4 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+            >
+                Settings
             </Link>
         </div>
     );

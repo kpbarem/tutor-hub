@@ -16,9 +16,7 @@ export default function ScheduleLessonPage() {
 
       <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <form action={createLessonAsStudent} className="space-y-5">
-          <div className="grid grid-cols-2 gap-4">
             <LessonDateTimeFields />
-          </div>
           <div>
             <label className="block text-sm font-semibold text-slate-700">Duration</label>
             <select name="duration" defaultValue="60" className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100">

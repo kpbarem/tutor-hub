@@ -2,9 +2,11 @@ import Link from "next/link";
 import { CalendarPlus, ChevronLeft, ChevronRight } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getTutorAccountId } from "@/lib/get-tutor-account";
+import { getTutorTimezone } from "@/lib/get-tutor-timezone";
+import { formatInTimezone } from "@/lib/format-in-timezone";
 
-const dayLabelFormatter = new Intl.DateTimeFormat("en-US", { weekday: "short" });
-const timeFormatter = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit" });
+// const dayLabelFormatter = new Intl.DateTimeFormat("en-US", { weekday: "short" });
+// const timeFormatter = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit" });
 const rangeFormatter = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" });
 
 function getWeekDates(offset: number) {
@@ -32,6 +34,7 @@ export default async function CalendarPage({
 
   const supabase = await createClient();
   const tutorAccountId = await getTutorAccountId(supabase);
+  const tutorTimezone = await getTutorTimezone(supabase);
 
   const weekDates = getWeekDates(offset);
   const weekStart = weekDates[0];
@@ -90,7 +93,7 @@ export default async function CalendarPage({
         <div className="grid min-w-[900px] grid-cols-7 border-b border-slate-200 bg-slate-50">
           {weekDates.map((date) => (
             <div key={date.toISOString()} className="border-r border-slate-200 p-4 last:border-r-0">
-              <p className="text-xs font-semibold uppercase text-slate-500">{dayLabelFormatter.format(date)}</p>
+              <p className="text-xs font-semibold uppercase text-slate-500">{formatInTimezone(date, tutorTimezone, { weekday: "short" })}</p>
               <p className="mt-1 text-lg font-bold">{date.getDate()}</p>
             </div>
           ))}
@@ -108,7 +111,7 @@ export default async function CalendarPage({
                 {dayLessons.map((lesson) => (
                   <div key={lesson.id} className="rounded-xl border border-blue-200 bg-blue-50 p-3">
                     <p className="text-xs font-semibold text-blue-900">
-                      {timeFormatter.format(new Date(lesson.starts_at))}
+                      {formatInTimezone(new Date(lesson.starts_at), tutorTimezone, { hour: "numeric", minute: "2-digit" })}
                     </p>
                     <p className="mt-1 text-sm font-bold text-slate-950">
                       {(lesson.students as unknown as { name: string } | null)?.name ?? "Unknown student"}

@@ -8,6 +8,7 @@ import { createPaymentRequest } from "./charge/actions";
 import { CopyLinkButton } from "@/components/copy-link-button";
 import Link from "next/link"
 import { NotesEditor } from "@/components/notes-editor";
+import { formatInTimezone } from "@/lib/format-in-timezone";
 
 export default async function StudentPage({
   params,
@@ -29,6 +30,16 @@ export default async function StudentPage({
   if (!student) notFound();
 
   const avatar = student.name.split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase();
+
+  const { data: nextLesson } = await supabase
+    .from("lessons")
+    .select("starts_at")
+    .eq("student_id", id)
+    .neq("status", "cancelled")
+    .gte("starts_at", new Date().toISOString())
+    .order("starts_at", { ascending: true })
+    .limit(1)
+    .maybeSingle();
 
   const { data: payments } = await supabase
     .from("payments")
@@ -201,7 +212,11 @@ export default async function StudentPage({
                 <span className="grid h-10 w-10 place-items-center rounded-xl bg-blue-50 text-blue-800"><CalendarDays size={18} /></span>
                 <div>
                   <p className="text-sm text-slate-500">Next lesson</p>
-                  <p className="font-semibold">No lessons scheduled yet</p>
+                  <p className="font-semibold">
+                    {nextLesson
+                      ? formatInTimezone(new Date(nextLesson.starts_at), student.timezone, { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })
+                      : "No lessons scheduled yet"}
+                  </p>
                 </div>
               </div>
               <div className="flex gap-3">
