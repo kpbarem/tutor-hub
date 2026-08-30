@@ -55,6 +55,9 @@ export default async function PortalPage() {
                         <p className="font-semibold">Balance due</p>
                     </div>
                     <p className="mt-3 text-2xl font-bold">${(outstandingCents / 100).toFixed(2)}</p>
+                    <Link href="/portal/payments" className="mt-2 inline-block text-sm font-semibold text-blue-800 hover:text-blue-900">
+                        Make a payment →
+                    </Link>
                 </div>
             </div>
 

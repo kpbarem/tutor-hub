@@ -9,12 +9,12 @@ import { formatInTimezone } from "@/lib/format-in-timezone";
 // const timeFormatter = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit" });
 const rangeFormatter = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" });
 
-function getWeekDates(offset: number) {
-  const today = new Date();
-  const dayOfWeek = today.getDay();
+function getWeekDates(offset: number, timezone: string) {
+  const todayInTz = new Date(new Date().toLocaleString("en-US", { timeZone: timezone }));
+  const dayOfWeek = todayInTz.getDay();
   const mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-  const monday = new Date(today);
-  monday.setDate(today.getDate() + mondayOffset + offset * 7);
+  const monday = new Date(todayInTz);
+  monday.setDate(todayInTz.getDate() + mondayOffset + offset * 7);
   monday.setHours(0, 0, 0, 0);
 
   return Array.from({ length: 7 }, (_, i) => {
@@ -36,7 +36,7 @@ export default async function CalendarPage({
   const tutorAccountId = await getTutorAccountId(supabase);
   const tutorTimezone = await getTutorTimezone(supabase);
 
-  const weekDates = getWeekDates(offset);
+  const weekDates = getWeekDates(offset, tutorTimezone);
   const weekStart = weekDates[0];
   const weekEnd = new Date(weekDates[6]);
   weekEnd.setHours(23, 59, 59, 999);
@@ -102,8 +102,9 @@ export default async function CalendarPage({
         <div className="grid min-h-[560px] min-w-[900px] grid-cols-7">
           {weekDates.map((date) => {
             const dayLessons = (lessons ?? []).filter((lesson) => {
-              const lessonDate = new Date(lesson.starts_at);
-              return lessonDate.toDateString() === date.toDateString();
+              const lessonLocalDate = formatInTimezone(new Date(lesson.starts_at), tutorTimezone, { year: "numeric", month: "2-digit", day: "2-digit" });
+              const columnLocalDate = formatInTimezone(date, tutorTimezone, { year: "numeric", month: "2-digit", day: "2-digit" });
+              return lessonLocalDate === columnLocalDate;
             });
 
             return (
