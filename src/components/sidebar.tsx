@@ -9,6 +9,7 @@ const links = [
   ["Students", "/dashboard/students", Users],
   ["Lessons", "/dashboard", BookOpen],
   ["Payments", "/dashboard", CreditCard],
+  ["Availability", "/dashboard/availability", CalendarDays],
 ];
 
 export function Sidebar() {

@@ -49,6 +49,13 @@ export default async function CalendarPage({
     .lte("starts_at", weekEnd.toISOString())
     .order("starts_at");
 
+  const { data: blocks } = await supabase
+    .from("availability_blocks")
+    .select("id, starts_at, ends_at, note")
+    .eq("tutor_account_id", tutorAccountId)
+    .lte("starts_at", weekEnd.toISOString())
+    .gte("ends_at", weekStart.toISOString());
+
   return (
     <div className="mx-auto max-w-7xl">
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
@@ -106,6 +113,11 @@ export default async function CalendarPage({
               const columnLocalDate = formatInTimezone(date, tutorTimezone, { year: "numeric", month: "2-digit", day: "2-digit" });
               return lessonLocalDate === columnLocalDate;
             });
+            const dayBlocks = (blocks ?? []).filter((block) => {
+              const blockStart = formatInTimezone(new Date(block.starts_at), tutorTimezone, { year: "numeric", month: "2-digit", day: "2-digit" });
+              const columnDate = formatInTimezone(date, tutorTimezone, { year: "numeric", month: "2-digit", day: "2-digit" });
+              return blockStart === columnDate;
+            });
 
             return (
               <div key={date.toISOString()} className="space-y-2 border-r border-slate-100 p-3 last:border-r-0">
@@ -118,6 +130,16 @@ export default async function CalendarPage({
                       {(lesson.students as unknown as { name: string } | null)?.name ?? "Unknown student"}
                     </p>
                     {lesson.topic && <p className="mt-1 text-xs text-slate-500">{lesson.topic}</p>}
+                  </div>
+                ))}
+                {dayBlocks.map((block) => (
+                  <div key={block.id} className="rounded-xl border border-slate-300 bg-slate-100 p-3">
+                    <p className="text-xs font-semibold text-slate-600">
+                      {formatInTimezone(new Date(block.starts_at), tutorTimezone, { hour: "numeric", minute: "2-digit" })}
+                      {" – "}
+                      {formatInTimezone(new Date(block.ends_at), tutorTimezone, { hour: "numeric", minute: "2-digit" })}
+                    </p>
+                    <p className="mt-1 text-xs text-slate-500">{block.note || "Unavailable"}</p>
                   </div>
                 ))}
               </div>

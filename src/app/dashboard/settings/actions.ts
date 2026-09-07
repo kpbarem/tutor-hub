@@ -6,6 +6,7 @@ import { headers } from "next/headers";
 import { stripe } from "@/lib/stripe";
 import { createClient } from "@/lib/supabase/server";
 import { getTutorAccountId } from "@/lib/get-tutor-account";
+import { getGoogleAuthUrl } from "@/lib/google-calendar";
 
 export async function connectStripeAccount() {
   const supabase = await createClient();
@@ -72,4 +73,16 @@ export async function updateTutorTimezone(timezone: string) {
   }
 
   revalidatePath("/dashboard/settings");
+}
+
+export async function connectGoogleCalendar() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+
+  const headersList = await headers();
+  const origin = process.env.NEXT_PUBLIC_SITE_URL ?? `http://${headersList.get("host")}`;
+  const redirectUri = `${origin}/api/google/callback`;
+
+  redirect(getGoogleAuthUrl(redirectUri));
 }

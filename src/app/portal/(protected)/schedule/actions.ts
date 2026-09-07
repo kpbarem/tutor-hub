@@ -4,25 +4,23 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getStudentRecord } from "@/lib/get-student-record";
+import { checkScheduleConflict } from "@/lib/check-schedule-conflict";
+import { pushLessonToGoogle } from "@/lib/google-calendar";
 
-export async function createLessonAsStudent(formData: FormData) {
+export async function createLessonAsStudent(startsAtIso: string, duration: number, topic: string) {
     const supabase = await createClient();
     const student = await getStudentRecord(supabase);
     if (!student) redirect("/portal/login");
-
-    //   const date = formData.get("date") as string;
-    //   const time = formData.get("time") as string;
-    //   const duration = Number(formData.get("duration"));
-    //   const topic = formData.get("topic") as string;
-
-    //   const startsAt = new Date(`${date}T${time}`);
-    //   const endsAt = new Date(startsAt.getTime() + duration * 60_000);
-    const startsAtIso = formData.get("startsAtIso") as string;
-    const duration = Number(formData.get("duration"));
-    const topic = formData.get("topic") as string;
+    // const startsAtIso = formData.get("startsAtIso") as string;
+    // const duration = Number(formData.get("duration"));
+    // const topic = formData.get("topic") as string;
 
     const startsAt = new Date(startsAtIso);
     const endsAt = new Date(startsAt.getTime() + duration * 60_000);
+    const conflict = await checkScheduleConflict(supabase, student.tutor_account_id, startsAt, endsAt);
+    if (conflict) {
+        throw new Error(conflict);
+    }
 
     const { data: lesson, error } = await supabase
         .from("lessons")
@@ -76,6 +74,16 @@ export async function createLessonAsStudent(formData: FormData) {
     } catch (err) {
         console.error("Daily room creation threw:", err);
     }
+
+    await pushLessonToGoogle(
+        supabase,
+        student.tutor_account_id,
+        lesson.id,
+        `Lesson with ${student.name}`,
+        topic || "",
+        startsAt,
+        endsAt
+    );
 
     revalidatePath("/portal");
     redirect("/portal");

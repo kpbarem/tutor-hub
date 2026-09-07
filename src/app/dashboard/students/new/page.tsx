@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createStudent } from "./actions";
+import { TimezoneSelect } from "@/components/timezone-select";
 
 export default function NewStudentPage() {
   return (
@@ -50,13 +51,7 @@ export default function NewStudentPage() {
             <label htmlFor="timezone" className="block text-sm font-semibold text-slate-700">
               Timezone
             </label>
-            <input
-              id="timezone"
-              name="timezone"
-              type="text"
-              placeholder="GET"
-              className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100"
-            />
+            <TimezoneSelect name="timezone" />
           </div>
 
           <div>

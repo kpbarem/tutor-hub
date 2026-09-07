@@ -4,6 +4,8 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getTutorAccountId } from "@/lib/get-tutor-account";
+import { checkScheduleConflict } from "@/lib/check-schedule-conflict";
+import { pushLessonToGoogle } from "@/lib/google-calendar";
 
 export async function createLesson(formData: FormData) {
   const supabase = await createClient();
@@ -27,6 +29,10 @@ export async function createLesson(formData: FormData) {
 
   const startsAt = new Date(startsAtIso);
   const endsAt = new Date(startsAt.getTime() + duration * 60_000);
+  const conflict = await checkScheduleConflict(supabase, tutorAccountId, startsAt, endsAt);
+  if (conflict) {
+    throw new Error(conflict);
+  }
 
   const { data: lesson, error } = await supabase
     .from("lessons")
@@ -69,6 +75,18 @@ export async function createLesson(formData: FormData) {
   } catch (err) {
     console.error("Daily room creation failed:", err);
   }
+
+  const { data: studentForEvent } = await supabase.from("students").select("name").eq("id", studentId).single();
+  await pushLessonToGoogle(
+    supabase,
+    tutorAccountId,
+    lesson.id,
+    `Lesson with ${studentForEvent?.name ?? "student"}`,
+    topic || "",
+    startsAt,
+    endsAt
+  );
+
 
   revalidatePath("/dashboard/calendar");
   revalidatePath("/dashboard");

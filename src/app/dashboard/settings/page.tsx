@@ -4,6 +4,7 @@ import { getTutorAccountId } from "@/lib/get-tutor-account";
 import { connectStripeAccount } from "./actions";
 import { TimezoneForm } from "@/components/timezone-form";
 import { updateTutorTimezone } from "./actions";
+import { connectGoogleCalendar } from "./actions";
 
 export default async function SettingsPage() {
     const supabase = await createClient();
@@ -11,7 +12,7 @@ export default async function SettingsPage() {
 
     const { data: tutorAccount } = await supabase
         .from("tutor_accounts")
-        .select("stripe_connect_account_id, stripe_payouts_enabled")
+        .select("stripe_connect_account_id, stripe_payouts_enabled, google_calendar_connected")
         .eq("id", tutorAccountId)
         .single();
 
@@ -58,6 +59,23 @@ export default async function SettingsPage() {
                 <h2 className="font-semibold">Your timezone</h2>
                 <p className="mt-1 text-sm text-slate-500">Lesson times across the app will display in this timezone.</p>
                 <TimezoneForm defaultValue={profile?.timezone} action={updateTutorTimezone} />
+            </section>
+            <section className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <h2 className="font-semibold">Google Calendar</h2>
+                <p className="mt-1 text-sm text-slate-500">Sync your lessons and blocked times to Google Calendar.</p>
+                <div className="mt-4">
+                    {tutorAccount?.google_calendar_connected ? (
+                        <span className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1.5 text-sm font-semibold text-emerald-700">
+                            ✓ Connected
+                        </span>
+                    ) : (
+                        <form action={connectGoogleCalendar}>
+                            <button type="submit" className="rounded-xl bg-blue-800 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-900">
+                                Connect Google Calendar
+                            </button>
+                        </form>
+                    )}
+                </div>
             </section>
         </div>
     );

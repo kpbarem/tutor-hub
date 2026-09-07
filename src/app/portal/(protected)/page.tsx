@@ -3,6 +3,7 @@ import { CalendarDays, MessageCircle, WalletCards, BookOpen } from "lucide-react
 import { createClient } from "@/lib/supabase/server";
 import { getStudentRecord } from "@/lib/get-student-record";
 import { formatInTimezone } from "@/lib/format-in-timezone";
+import { cancelLessonAsStudent } from "./actions";
 
 export default async function PortalPage() {
     const supabase = await createClient();
@@ -13,6 +14,7 @@ export default async function PortalPage() {
         .from("lessons")
         .select("id, starts_at, topic, video_room_url")
         .eq("student_id", student.id)
+        .neq("status", "cancelled")
         .gte("starts_at", new Date().toISOString())
         .order("starts_at", { ascending: true })
         .limit(5);
@@ -86,6 +88,16 @@ export default async function PortalPage() {
                                             Join call →
                                         </Link>
                                     )}
+                                    <form
+                                        action={async () => {
+                                            "use server";
+                                            await cancelLessonAsStudent(lesson.id);
+                                        }}
+                                    >
+                                        <button type="submit" className="text-xs font-semibold text-red-600 hover:text-red-700">
+                                            Cancel
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         ))
