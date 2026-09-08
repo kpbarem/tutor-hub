@@ -12,10 +12,10 @@ export default async function PortalPage() {
 
     const { data: upcomingLessons } = await supabase
         .from("lessons")
-        .select("id, starts_at, topic, video_room_url")
+        .select("id, starts_at, ends_at, topic, video_room_url")
         .eq("student_id", student.id)
         .neq("status", "cancelled")
-        .gte("starts_at", new Date().toISOString())
+        .gte("ends_at", new Date().toISOString())
         .order("starts_at", { ascending: true })
         .limit(5);
 
@@ -75,7 +75,11 @@ export default async function PortalPage() {
                             <div key={lesson.id} className="flex items-center justify-between p-5">
                                 <div>
                                     <p className="font-semibold">
-                                        {formatInTimezone(new Date(lesson.starts_at), student.timezone, { weekday: "short", month: "short", day: "numeric" })}
+                                        {new Date(lesson.starts_at) <= new Date() ? (
+                                            <span className="text-emerald-600">● Live now</span>
+                                        ) : (
+                                            formatInTimezone(new Date(lesson.starts_at), student.timezone, { weekday: "short", month: "short", day: "numeric" })
+                                        )}
                                     </p>
                                     {lesson.topic && <p className="text-sm text-slate-500">{lesson.topic}</p>}
                                 </div>

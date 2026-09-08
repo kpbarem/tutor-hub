@@ -2,13 +2,16 @@ import Link from "next/link";
 import { CalendarPlus, ChevronRight, Clock3, CreditCard, Users } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getTutorAccountId } from "@/lib/get-tutor-account";
+import { getTutorTimezone } from "@/lib/get-tutor-timezone";
+import { formatInTimezone } from "@/lib/format-in-timezone";
 
-const dateFormatter = new Intl.DateTimeFormat("en-US", { weekday: "long", month: "long", day: "numeric" });
+// const dateFormatter = new Intl.DateTimeFormat("en-US", { weekday: "long", month: "long", day: "numeric" });
 
 export default async function DashboardPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   const tutorAccountId = await getTutorAccountId(supabase);
+  const tutorTimezone = await getTutorTimezone(supabase);
 
   const { data: profile } = await supabase
     .from("profiles")
@@ -24,9 +27,10 @@ export default async function DashboardPage() {
 
   const { data: upcomingLessons } = await supabase
     .from("lessons")
-    .select("id, starts_at, topic, video_room_url, students(name)")
+    .select("id, starts_at, ends_at, topic, video_room_url, students(name)")
     .eq("tutor_account_id", tutorAccountId)
-    .gte("starts_at", new Date().toISOString())
+    .neq("status", "cancelled")
+    .gte("ends_at", new Date().toISOString())
     .order("starts_at", { ascending: true })
     .limit(5);
 
@@ -56,7 +60,7 @@ export default async function DashboardPage() {
     <div className="mx-auto max-w-7xl space-y-7">
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div>
-          <p className="text-sm font-medium text-blue-800">{dateFormatter.format(new Date())}</p>
+          <p className="text-sm font-medium text-blue-800">{formatInTimezone(new Date(), tutorTimezone, { weekday: "long", month: "long", day: "numeric" })}</p>
           <h1 className="mt-1 text-3xl font-bold tracking-tight">
             Good morning, {profile?.display_name ?? "there"}
           </h1>
@@ -115,12 +119,18 @@ export default async function DashboardPage() {
                 return (
                   <div key={lesson.id} className="flex items-center gap-4 p-5">
                     <div className="min-w-20 rounded-xl bg-slate-100 px-3 py-2 text-center">
-                      <p className="text-xs font-semibold uppercase text-slate-500">
-                        {new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short", day: "numeric" }).format(startsAt)}
-                      </p>
-                      <p className="mt-1 text-sm font-bold">
-                        {new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit" }).format(startsAt)}
-                      </p>
+                      {startsAt <= new Date() ? (
+                        <p className="text-sm font-bold text-emerald-600">● Live now</p>
+                      ) : (
+                        <>
+                          <p className="text-xs font-semibold uppercase text-slate-500">
+                            {formatInTimezone(startsAt, tutorTimezone, { weekday: "short", month: "short", day: "numeric" })}
+                          </p>
+                          <p className="mt-1 text-sm font-bold">
+                            {formatInTimezone(startsAt, tutorTimezone, { hour: "numeric", minute: "2-digit" })}
+                          </p>
+                        </>
+                      )}
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="font-semibold">{studentName}</p>

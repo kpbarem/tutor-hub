@@ -1,16 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Check } from "lucide-react";
 
 const FALLBACK_TIMEZONES = ["UTC", "America/New_York", "America/Denver", "Europe/London", "Asia/Tbilisi"];
-
-function getAllTimezones(): string[] {
-  if (typeof Intl.supportedValuesOf === "function") {
-    return Intl.supportedValuesOf("timeZone");
-  }
-  return FALLBACK_TIMEZONES;
-}
 
 export function TimezoneForm({
   defaultValue,
@@ -19,9 +12,15 @@ export function TimezoneForm({
   defaultValue?: string | null;
   action: (timezone: string) => Promise<void>;
 }) {
-  const timezones = getAllTimezones();
+  const [timezones, setTimezones] = useState<string[]>(FALLBACK_TIMEZONES);
   const [value, setValue] = useState(defaultValue || "UTC");
   const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+
+  useEffect(() => {
+    if (typeof Intl.supportedValuesOf === "function") {
+      setTimezones(Intl.supportedValuesOf("timeZone"));
+    }
+  }, []);
 
   async function handleSave() {
     setStatus("saving");
