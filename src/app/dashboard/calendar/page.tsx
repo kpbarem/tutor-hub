@@ -39,12 +39,14 @@ export default async function CalendarPage({
   const weekDates = getWeekDates(offset, tutorTimezone);
   const weekStart = weekDates[0];
   const weekEnd = new Date(weekDates[6]);
+  const now = new Date();
   weekEnd.setHours(23, 59, 59, 999);
 
   const { data: lessons } = await supabase
     .from("lessons")
-    .select("id, starts_at, topic, video_room_url, students(name)")
+    .select("id, starts_at, ends_at, topic, video_room_url, students(name)")
     .eq("tutor_account_id", tutorAccountId)
+    .neq("status", "cancelled")
     .gte("starts_at", weekStart.toISOString())
     .lte("starts_at", weekEnd.toISOString())
     .order("starts_at");
@@ -121,17 +123,28 @@ export default async function CalendarPage({
 
             return (
               <div key={date.toISOString()} className="space-y-2 border-r border-slate-100 p-3 last:border-r-0">
-                {dayLessons.map((lesson) => (
-                  <div key={lesson.id} className="rounded-xl border border-blue-200 bg-blue-50 p-3">
-                    <p className="text-xs font-semibold text-blue-900">
-                      {formatInTimezone(new Date(lesson.starts_at), tutorTimezone, { hour: "numeric", minute: "2-digit" })}
-                    </p>
-                    <p className="mt-1 text-sm font-bold text-slate-950">
-                      {(lesson.students as unknown as { name: string } | null)?.name ?? "Unknown student"}
-                    </p>
-                    {lesson.topic && <p className="mt-1 text-xs text-slate-500">{lesson.topic}</p>}
-                  </div>
-                ))}
+                {dayLessons.map((lesson) => {
+                  const startsAt = new Date(lesson.starts_at);
+                  const endsAt = new Date(lesson.ends_at);
+                  const isLive = startsAt <= now && now <= endsAt;
+
+                  return (
+                    <div key={lesson.id} className="rounded-xl border border-blue-200 bg-blue-50 p-3">
+                      <p className={"text-xs font-semibold " + (isLive ? "text-emerald-600" : "text-blue-900")}>
+                        {isLive ? "● Live now" : formatInTimezone(startsAt, tutorTimezone, { hour: "numeric", minute: "2-digit" })}
+                      </p>
+                      <p className="mt-1 text-sm font-bold text-slate-950">
+                        {(lesson.students as unknown as { name: string } | null)?.name ?? "Unknown student"}
+                      </p>
+                      {lesson.topic && <p className="mt-1 text-xs text-slate-500">{lesson.topic}</p>}
+                      {lesson.video_room_url && (
+                        <Link href={`/dashboard/lessons/${lesson.id}/call`} className="mt-2 inline-block text-xs font-semibold text-blue-800 hover:text-blue-900">
+                          Join call →
+                        </Link>
+                      )}
+                    </div>
+                  );
+                })}
                 {dayBlocks.map((block) => (
                   <div key={block.id} className="rounded-xl border border-slate-300 bg-slate-100 p-3">
                     <p className="text-xs font-semibold text-slate-600">
