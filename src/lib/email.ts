@@ -4,7 +4,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Using Resend's shared testing address for now — swap this once a real
 // domain is verified in Resend, so emails come from your own name instead.
-const FROM_ADDRESS = "Tutor Hub <onboarding@resend.dev>";
+const FROM_ADDRESS = "notifications@tutorhub.pro";
 
 export async function sendEmail({
   to,

@@ -6,6 +6,8 @@ import { createClient } from "@/lib/supabase/server";
 import { getTutorAccountId } from "@/lib/get-tutor-account";
 import { checkScheduleConflict } from "@/lib/check-schedule-conflict";
 import { pushLessonToGoogle } from "@/lib/google-calendar";
+import { sendEmail } from "@/lib/email";
+import { formatInTimezone } from "@/lib/format-in-timezone";
 
 export async function createLesson(formData: FormData) {
   const supabase = await createClient();
@@ -49,7 +51,7 @@ export async function createLesson(formData: FormData) {
   if (error) {
     throw new Error(error.message);
   }
-
+  let videoRoomUrl: string | null = null;
   try {
     const roomResponse = await fetch("https://api.daily.co/v1/rooms", {
       method: "POST",
@@ -68,6 +70,7 @@ export async function createLesson(formData: FormData) {
 
     if (roomResponse.ok) {
       const room = await roomResponse.json();
+      videoRoomUrl = room.url;
       await supabase.from("lessons").update({ video_room_url: room.url }).eq("id", lesson.id);
     } else {
       console.error("Daily room creation failed:", await roomResponse.text());
@@ -76,7 +79,30 @@ export async function createLesson(formData: FormData) {
     console.error("Daily room creation failed:", err);
   }
 
-  const { data: studentForEvent } = await supabase.from("students").select("name").eq("id", studentId).single();
+    const { data: studentForEvent } = await supabase
+    .from("students")
+    .select("name, email, timezone")
+    .eq("id", studentId)
+    .single();
+
+  if (studentForEvent?.email) {
+    const formattedTime = formatInTimezone(startsAt, studentForEvent.timezone, {
+      weekday: "long", month: "short", day: "numeric", hour: "numeric", minute: "2-digit",
+    });
+
+    await sendEmail({
+      to: studentForEvent.email,
+      subject: `Lesson scheduled: ${formattedTime}`,
+      html: `
+        <p>Hi ${studentForEvent.name},</p>
+        <p>Your tutor scheduled a lesson:</p>
+        <p><strong>${formattedTime}</strong></p>
+        ${topic ? `<p>Topic: ${topic}</p>` : ""}
+        ${videoRoomUrl ? `<p><a href="${videoRoomUrl}">Join the call →</a></p>` : ""}
+        <p><a href="${process.env.NEXT_PUBLIC_SITE_URL}/portal">View in your student portal →</a></p>
+      `,
+    });
+  }
   await pushLessonToGoogle(
     supabase,
     tutorAccountId,

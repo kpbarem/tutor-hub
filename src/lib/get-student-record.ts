@@ -31,7 +31,7 @@ export async function getStudentRecord(supabase: SupabaseClient) {
 
   const { data: student, error } = await supabase
     .from("students")
-    .select("id, name, tutor_account_id, profile_id, timezone",)
+    .select("id, name, email, tutor_account_id, profile_id, timezone",)
     .eq("profile_id", user.id)
     .maybeSingle();
 
