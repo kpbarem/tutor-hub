@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendEmail } from "@/lib/email";
+import { createNotification } from "@/lib/create-notification";
 
 const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
 
@@ -64,7 +65,16 @@ export async function submitHomeworkFile(homeworkId: string, file: File) {
             <p><a href="${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/students">View in your dashboard →</a></p>
           `,
         });
+
+        await createNotification(
+          supabase,
+          tutorAccount.owner_profile_id,
+          "homework_submitted",
+          `${studentName} submitted: ${homework.title}`,
+          "/dashboard/students"
+        );
       }
+
     }
   }
 

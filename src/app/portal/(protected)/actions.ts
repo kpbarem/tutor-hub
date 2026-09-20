@@ -6,7 +6,8 @@ import { getStudentRecord } from "@/lib/get-student-record";
 import { removeLessonFromGoogle } from "@/lib/google-calendar";
 import { sendEmail } from "@/lib/email";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { formatInTimezone} from "@/lib/format-in-timezone";
+import { formatInTimezone } from "@/lib/format-in-timezone";
+import { createNotification } from "@/lib/create-notification";
 
 
 export async function cancelLessonAsStudent(lessonId: string) {
@@ -63,6 +64,16 @@ export async function cancelLessonAsStudent(lessonId: string) {
           <p><a href="${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/calendar">View your calendar →</a></p>
         `,
       });
+    }
+
+    if (tutorAccount?.owner_profile_id) {
+      await createNotification(
+        supabase,
+        tutorAccount.owner_profile_id,
+        "lesson_cancelled",
+        `${student.name} cancelled a lesson`,
+        "/dashboard/calendar"
+      );
     }
   }
 

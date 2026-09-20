@@ -3,6 +3,7 @@ import type Stripe from "stripe";
 import { stripe } from "@/lib/stripe";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendEmail } from "@/lib/email";
+import { createNotification } from "@/lib/create-notification";
 
 // This is the ONLY source of truth for whether a payment actually succeeded.
 // The success_url redirect in the checkout flow just means "the browser came
@@ -78,6 +79,13 @@ export async function POST(request: NextRequest) {
               html: `<p>${student?.name ?? "A student"} paid <strong>$${amount}</strong>.</p><p><a href="${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/students/${payment.student_id}">View student →</a></p>`,
             });
           }
+          await createNotification(
+            supabase,
+            tutorAccount.owner_profile_id,
+            "payment_received",
+            `${student?.name ?? "A student"} paid $${amount}`,
+            `/dashboard/students/${payment.student_id}`
+          );
         }
       }
       break;

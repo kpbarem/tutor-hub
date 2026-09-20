@@ -9,6 +9,7 @@ import { pushLessonToGoogle } from "@/lib/google-calendar";
 import { sendEmail } from "@/lib/email";
 import { formatInTimezone } from "@/lib/format-in-timezone";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { createNotification } from "@/lib/create-notification";
 
 export async function createLessonAsStudent(startsAtIso: string, duration: number, topic: string) {
     const supabase = await createClient();
@@ -132,6 +133,15 @@ export async function createLessonAsStudent(startsAtIso: string, duration: numbe
                     <p><a href="${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/calendar">View in your calendar →</a></p>
                 `,
             });
+        }
+        if (tutorAccount?.owner_profile_id) {
+            await createNotification(
+                supabase,
+                tutorAccount.owner_profile_id,
+                "lesson_scheduled",
+                `${student.name} booked a lesson`,
+                "/dashboard/calendar"
+            );
         }
     }
 
