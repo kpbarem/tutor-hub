@@ -7,8 +7,8 @@ const links = [
   ["Overview", "/dashboard", LayoutDashboard],
   ["Calendar", "/dashboard/calendar", CalendarDays],
   ["Students", "/dashboard/students", Users],
-  ["Lessons", "/dashboard", BookOpen],
-  ["Payments", "/dashboard", CreditCard],
+  // ["Lessons", "/dashboard", BookOpen],
+  // ["Payments", "/dashboard", CreditCard],
   ["Availability", "/dashboard/availability", CalendarDays],
 ];
 

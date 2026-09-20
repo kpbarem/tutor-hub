@@ -8,6 +8,7 @@ import { checkScheduleConflict } from "@/lib/check-schedule-conflict";
 import { pushLessonToGoogle } from "@/lib/google-calendar";
 import { sendEmail } from "@/lib/email";
 import { formatInTimezone } from "@/lib/format-in-timezone";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 export async function createLessonAsStudent(startsAtIso: string, duration: number, topic: string) {
     const supabase = await createClient();
@@ -97,6 +98,43 @@ export async function createLessonAsStudent(startsAtIso: string, duration: numbe
             `,
         });
     }
+
+    const { data: tutorAccount } = await supabase
+        .from("tutor_accounts")
+        .select("owner_profile_id")
+        .eq("id", student.tutor_account_id)
+        .single();
+
+    if (tutorAccount?.owner_profile_id) {
+        const adminClient = createAdminClient();
+        const { data: tutorUser, error: tutorLookupError } = await adminClient.auth.admin.getUserById(tutorAccount.owner_profile_id);
+
+        if (tutorLookupError) {
+            console.error("Failed to look up tutor email for booking notification:", tutorLookupError.message);
+        } else if (tutorUser?.user?.email) {
+            const { data: tutorProfile } = await supabase
+                .from("profiles")
+                .select("timezone")
+                .eq("id", tutorAccount.owner_profile_id)
+                .single();
+
+            const formattedTimeForTutor = formatInTimezone(startsAt, tutorProfile?.timezone || "UTC", {
+                weekday: "long", month: "short", day: "numeric", hour: "numeric", minute: "2-digit",
+            });
+
+            await sendEmail({
+                to: tutorUser.user.email,
+                subject: `${student.name} booked a lesson`,
+                html: `
+                    <p>${student.name} scheduled a new lesson:</p>
+                    <p><strong>${formattedTimeForTutor}</strong></p>
+                    ${topic ? `<p>Topic: ${topic}</p>` : ""}
+                    <p><a href="${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/calendar">View in your calendar →</a></p>
+                `,
+            });
+        }
+    }
+
     await pushLessonToGoogle(
         supabase,
         student.tutor_account_id,
