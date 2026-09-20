@@ -5,6 +5,7 @@ import { getStudentRecord } from "@/lib/get-student-record";
 import { TimezoneForm } from "@/components/timezone-form";
 import { updateStudentTimezone } from "./actions";
 
+
 export default async function PortalSettingsPage() {
     const supabase = await createClient();
     const student = await getStudentRecord(supabase);

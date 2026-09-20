@@ -16,9 +16,45 @@
   --danger: #dc2626;
 }
 
+/* Theme palettes — each one only overrides the accent colors.
+   Background, text, and layout stay identical across themes, so switching
+   feels like personalization, not a different app. */
+[data-theme="ocean"] {
+  --primary: #1e3a8a;
+  --primary-hover: #172554;
+  --primary-light: #dbeafe;
+}
+
+[data-theme="forest"] {
+  --primary: #166534;
+  --primary-hover: #14532d;
+  --primary-light: #dcfce7;
+}
+
+[data-theme="plum"] {
+  --primary: #6b21a8;
+  --primary-hover: #581c87;
+  --primary-light: #f3e8ff;
+}
+
+[data-theme="sunset"] {
+  --primary: #c2410c;
+  --primary-hover: #9a3412;
+  --primary-light: #ffedd5;
+}
+
+[data-theme="slate"] {
+  --primary: #334155;
+  --primary-hover: #1e293b;
+  --primary-light: #e2e8f0;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-light: var(--primary-light);
   --font-sans: Arial, Helvetica, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 }

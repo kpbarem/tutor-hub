@@ -1,8 +1,22 @@
 import type { ReactNode } from "react";
-import { Bell, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { Sidebar } from "./sidebar";
+import { NotificationBell } from "./notification-bell";
+import { createClient } from "@/lib/supabase/server";
 
-export function DashboardShell({ children }: { children: ReactNode }) {
+export async function DashboardShell({ children }: { children: ReactNode }) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  const { data: notifications } = user
+    ? await supabase
+        .from("notifications")
+        .select("id, type, message, link, read_at, created_at")
+        .eq("profile_id", user.id)
+        .order("created_at", { ascending: false })
+        .limit(20)
+    : { data: [] };
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-950 lg:flex">
       <Sidebar />
@@ -13,8 +27,7 @@ export function DashboardShell({ children }: { children: ReactNode }) {
             <input className="w-80 rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-4 text-sm outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100" placeholder="Search students, lessons, notes…" />
           </div>
           <div className="ml-auto flex items-center gap-3">
-            <button className="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-white text-slate-600"><Bell size={18} /></button>
-            {/* <div className="grid h-10 w-10 place-items-center rounded-full bg-amber-100 text-sm font-semibold text-amber-800">AT</div> */}
+            {user && <NotificationBell profileId={user.id} initialNotifications={notifications ?? []} />}
           </div>
         </header>
         <main className="p-5 md:p-8">{children}</main>

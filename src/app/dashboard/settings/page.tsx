@@ -5,6 +5,7 @@ import { connectStripeAccount } from "./actions";
 import { TimezoneForm } from "@/components/timezone-form";
 import { updateTutorTimezone } from "./actions";
 import { connectGoogleCalendar } from "./actions";
+import { ThemePicker } from "@/components/theme-picker";
 
 export default async function SettingsPage() {
     const supabase = await createClient();
@@ -19,7 +20,7 @@ export default async function SettingsPage() {
     const { data: { user } } = await supabase.auth.getUser();
     const { data: profile } = await supabase
         .from("profiles")
-        .select("timezone")
+        .select("timezone, theme")
         .eq("id", user!.id)
         .single();
 
@@ -75,6 +76,13 @@ export default async function SettingsPage() {
                             </button>
                         </form>
                     )}
+                </div>
+            </section>
+            <section className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <h2 className="font-semibold">Theme</h2>
+                <p className="mt-1 text-sm text-slate-500">Pick an accent color for your dashboard.</p>
+                <div className="mt-4">
+                    <ThemePicker defaultValue={profile?.theme} />
                 </div>
             </section>
         </div>
