@@ -61,7 +61,7 @@ export default async function PortalLayout({ children }: { children: ReactNode }
     <div className="min-h-screen bg-slate-50">
       <header className="flex items-center justify-between border-b border-slate-200 bg-white px-6 py-4">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wide text-blue-800">Student portal</p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-primary">Student portal</p>
           <h1 className="text-lg font-bold">{student.name}</h1>
         </div>
         <form action={signOutStudent}>

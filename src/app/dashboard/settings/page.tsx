@@ -30,7 +30,7 @@ export default async function SettingsPage() {
 
             <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
                 <div className="flex items-center gap-3">
-                    <span className="grid h-10 w-10 place-items-center rounded-xl bg-blue-50 text-blue-800">
+                    <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary-light text-primary">
                         <CreditCard size={18} />
                     </span>
                     <div>
@@ -48,7 +48,7 @@ export default async function SettingsPage() {
                         <form action={connectStripeAccount}>
                             <button
                                 type="submit"
-                                className="rounded-xl bg-blue-800 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-900"
+                                className="rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-hover"
                             >
                                 {tutorAccount?.stripe_connect_account_id ? "Finish connecting Stripe" : "Connect Stripe account"}
                             </button>
@@ -71,7 +71,7 @@ export default async function SettingsPage() {
                         </span>
                     ) : (
                         <form action={connectGoogleCalendar}>
-                            <button type="submit" className="rounded-xl bg-blue-800 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-900">
+                            <button type="submit" className="rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-hover">
                                 Connect Google Calendar
                             </button>
                         </form>

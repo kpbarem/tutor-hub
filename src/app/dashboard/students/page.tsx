@@ -46,7 +46,7 @@ export default async function StudentsPage() {
 
         <Link
           href="/dashboard/students/new"
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-800 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-900"
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-white hover:bg-primary-hover"
         >
           <Plus size={18} />
           Add student

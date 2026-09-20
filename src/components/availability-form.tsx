@@ -33,24 +33,24 @@ export function AvailabilityForm() {
         <div>
           <label className="block text-sm font-semibold text-slate-700">Start</label>
           <div className="mt-2 flex gap-2">
-            <input type="date" required value={startDate} onChange={(e) => setStartDate(e.target.value)} className="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100" />
-            <input type="time" required value={startTime} onChange={(e) => setStartTime(e.target.value)} className="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100" />
+            <input type="date" required value={startDate} onChange={(e) => setStartDate(e.target.value)} className="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-primary focus:ring-4 focus:ring-primary-light" />
+            <input type="time" required value={startTime} onChange={(e) => setStartTime(e.target.value)} className="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-primary focus:ring-4 focus:ring-primary-light" />
           </div>
         </div>
         <div>
           <label className="block text-sm font-semibold text-slate-700">End</label>
           <div className="mt-2 flex gap-2">
-            <input type="date" required value={endDate} onChange={(e) => setEndDate(e.target.value)} className="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100" />
-            <input type="time" required value={endTime} onChange={(e) => setEndTime(e.target.value)} className="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100" />
+            <input type="date" required value={endDate} onChange={(e) => setEndDate(e.target.value)} className="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-primary focus:ring-4 focus:ring-primary-light" />
+            <input type="time" required value={endTime} onChange={(e) => setEndTime(e.target.value)} className="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-primary focus:ring-4 focus:ring-primary-light" />
           </div>
         </div>
       </div>
       <div>
         <label className="block text-sm font-semibold text-slate-700">Note (optional)</label>
-        <input type="text" value={note} onChange={(e) => setNote(e.target.value)} placeholder="Traveling, doctor's appointment, etc." className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100" />
+        <input type="text" value={note} onChange={(e) => setNote(e.target.value)} placeholder="Traveling, doctor's appointment, etc." className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-primary focus:ring-4 focus:ring-primary-light" />
       </div>
       {status === "error" && <p className="text-sm text-red-600">{errorMsg}</p>}
-      <button type="submit" disabled={status === "saving"} className="rounded-xl bg-blue-800 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-900 disabled:opacity-50">
+      <button type="submit" disabled={status === "saving"} className="rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-hover disabled:opacity-50">
         {status === "saving" ? "Saving…" : "Add block"}
       </button>
     </form>

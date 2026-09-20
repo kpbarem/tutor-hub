@@ -67,7 +67,7 @@ export default async function CalendarPage({
         </div>
         <Link
           href="/dashboard/calendar/new"
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-800 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-900"
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-white hover:bg-primary-hover"
         >
           <CalendarPlus size={18} /> Schedule lesson
         </Link>
@@ -88,7 +88,7 @@ export default async function CalendarPage({
             <ChevronRight size={18} />
           </Link>
           {offset !== 0 && (
-            <Link href="/dashboard/calendar" className="ml-1 text-sm font-semibold text-blue-800">
+            <Link href="/dashboard/calendar" className="ml-1 text-sm font-semibold text-primary">
               Today
             </Link>
           )}
@@ -129,8 +129,8 @@ export default async function CalendarPage({
                   const isLive = startsAt <= now && now <= endsAt;
 
                   return (
-                    <div key={lesson.id} className="rounded-xl border border-blue-200 bg-blue-50 p-3">
-                      <p className={"text-xs font-semibold " + (isLive ? "text-emerald-600" : "text-blue-900")}>
+                    <div key={lesson.id} className="rounded-xl border border-primary-light bg-primary-light p-3">
+                      <p className={"text-xs font-semibold " + (isLive ? "text-emerald-600" : "text-primary-hover")}>
                         {isLive ? "● Live now" : formatInTimezone(startsAt, tutorTimezone, { hour: "numeric", minute: "2-digit" })}
                       </p>
                       <p className="mt-1 text-sm font-bold text-slate-950">
@@ -138,7 +138,7 @@ export default async function CalendarPage({
                       </p>
                       {lesson.topic && <p className="mt-1 text-xs text-slate-500">{lesson.topic}</p>}
                       {lesson.video_room_url && (
-                        <Link href={`/dashboard/lessons/${lesson.id}/call`} className="mt-2 inline-block text-xs font-semibold text-blue-800 hover:text-blue-900">
+                        <Link href={`/dashboard/lessons/${lesson.id}/call`} className="mt-2 inline-block text-xs font-semibold text-primary hover:text-primary-hover">
                           Join call →
                         </Link>
                       )}

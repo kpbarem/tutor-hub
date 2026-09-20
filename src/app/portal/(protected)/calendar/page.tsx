@@ -71,7 +71,7 @@ export default async function PortalCalendarPage({
             <ChevronRight size={18} />
           </Link>
           {offset !== 0 && (
-            <Link href="/portal/calendar" className="ml-1 text-sm font-semibold text-blue-800">
+            <Link href="/portal/calendar" className="ml-1 text-sm font-semibold text-primary">
               Today
             </Link>
           )}
@@ -113,13 +113,13 @@ export default async function PortalCalendarPage({
                   const isLive = startsAt <= now && now <= endsAt;
 
                   return (
-                    <div key={lesson.id} className="rounded-xl border border-blue-200 bg-blue-50 p-3">
-                      <p className={"text-xs font-semibold " + (isLive ? "text-emerald-600" : "text-blue-900")}>
+                    <div key={lesson.id} className="rounded-xl border border-primary-light bg-primary-light p-3">
+                      <p className={"text-xs font-semibold " + (isLive ? "text-emerald-600" : "text-primary-hover")}>
                         {isLive ? "● Live now" : timeFormatter(startsAt)}
                       </p>
                       {lesson.topic && <p className="mt-1 text-xs text-slate-500">{lesson.topic}</p>}
                       {lesson.video_room_url && (
-                        <Link href={`/portal/lessons/${lesson.id}/call`} className="mt-2 inline-block text-xs font-semibold text-blue-800 hover:text-blue-900">
+                        <Link href={`/portal/lessons/${lesson.id}/call`} className="mt-2 inline-block text-xs font-semibold text-primary hover:text-primary-hover">
                           Join call →
                         </Link>
                       )}

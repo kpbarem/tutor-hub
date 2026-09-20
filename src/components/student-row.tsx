@@ -10,7 +10,7 @@ export function StudentRow({ student }: StudentRowProps) {
         <tr key={student.id} className="hover:bg-slate-50">
             <td className="px-5 py-4">
                 <div className="flex items-center gap-3">
-                    <span className="grid h-10 w-10 place-items-center rounded-full bg-blue-100 text-xs font-bold text-blue-900">
+                    <span className="grid h-10 w-10 place-items-center rounded-full bg-primary-light text-xs font-bold text-primary-hover">
                         {student.avatar}
                     </span>
 
@@ -47,7 +47,7 @@ export function StudentRow({ student }: StudentRowProps) {
             <td className="px-5 py-4 text-right">
                 <Link
                     href={`/dashboard/students/${student.id}`}
-                    className="text-sm font-semibold text-blue-800 hover:underline"
+                    className="text-sm font-semibold text-primary hover:underline"
                 >
                     Open
                 </Link>

@@ -16,7 +16,7 @@ export function Sidebar() {
   return (
     <aside className="hidden w-64 shrink-0 border-r border-slate-200 bg-white p-5 lg:flex lg:flex-col">
       <Link href="/" className="mb-8 flex items-center gap-3 text-lg font-semibold text-slate-950">
-        <span className="grid h-10 w-10 place-items-center rounded-2xl bg-blue-800 text-white">T</span>
+        <span className="grid h-10 w-10 place-items-center rounded-2xl bg-primary text-white">T</span>
         Tutor Hub
       </Link>
       <nav className="space-y-1">

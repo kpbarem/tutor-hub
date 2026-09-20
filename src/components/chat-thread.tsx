@@ -92,12 +92,12 @@ export function ChatThread({
                 className={
                   "max-w-[75%] rounded-2xl px-4 py-2.5 text-sm " +
                   (m.sender_role === role
-                    ? "bg-blue-800 text-white"
+                    ? "bg-primary text-white"
                     : "bg-slate-100 text-slate-900")
                 }
               >
                 <p>{m.body}</p>
-                <p className={"mt-1 text-[11px] " + (m.sender_role === "tutor" ? "text-blue-200" : "text-slate-400")}>
+                <p className={"mt-1 text-[11px] " + (m.sender_role === "tutor" ? "text-white/70" : "text-slate-400")}>
                   {new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit" }).format(new Date(m.created_at))}
                 </p>
               </div>
@@ -112,12 +112,12 @@ export function ChatThread({
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
           placeholder="Type a message..."
-          className="flex-1 rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100"
+          className="flex-1 rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-4 focus:ring-primary-light"
         />
         <button
           type="submit"
           disabled={sending || !draft.trim()}
-          className="rounded-xl bg-blue-800 px-4 py-2.5 text-white hover:bg-blue-900 disabled:opacity-50"
+          className="rounded-xl bg-primary px-4 py-2.5 text-white hover:bg-primary-hover disabled:opacity-50"
         >
           <Send size={18} />
         </button>

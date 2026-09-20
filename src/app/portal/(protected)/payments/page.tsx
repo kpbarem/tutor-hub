@@ -61,9 +61,9 @@ export default async function PortalPaymentsPage({
               step="0.01"
               required
               defaultValue={outstandingCents > 0 ? (outstandingCents / 100).toFixed(2) : ""}
-              className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100"
+              className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-4 focus:ring-primary-light"
             />
-            <button type="submit" className="whitespace-nowrap rounded-xl bg-blue-800 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-900">
+            <button type="submit" className="whitespace-nowrap rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-hover">
               Pay now
             </button>
           </div>

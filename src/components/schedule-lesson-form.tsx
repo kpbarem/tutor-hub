@@ -58,16 +58,16 @@ export function ScheduleLessonForm({ blocks, timezone }: { blocks: Block[]; time
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label className="block text-sm font-semibold text-slate-700">Date</label>
-              <input type="date" required value={date} onChange={(e) => setDate(e.target.value)} className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100" />
+              <input type="date" required value={date} onChange={(e) => setDate(e.target.value)} className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-primary focus:ring-4 focus:ring-primary-light" />
             </div>
             <div>
               <label className="block text-sm font-semibold text-slate-700">Start time</label>
-              <input type="time" required value={time} onChange={(e) => setTime(e.target.value)} className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100" />
+              <input type="time" required value={time} onChange={(e) => setTime(e.target.value)} className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-primary focus:ring-4 focus:ring-primary-light" />
             </div>
           </div>
           <div>
             <label className="block text-sm font-semibold text-slate-700">Duration</label>
-            <select value={duration} onChange={(e) => setDuration(e.target.value)} className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100">
+            <select value={duration} onChange={(e) => setDuration(e.target.value)} className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-primary focus:ring-4 focus:ring-primary-light">
               <option value="30">30 minutes</option>
               <option value="45">45 minutes</option>
               <option value="60">60 minutes</option>
@@ -76,14 +76,14 @@ export function ScheduleLessonForm({ blocks, timezone }: { blocks: Block[]; time
           </div>
           <div>
             <label className="block text-sm font-semibold text-slate-700">Topic (optional)</label>
-            <input type="text" value={topic} onChange={(e) => setTopic(e.target.value)} placeholder="What do you want to work on?" className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100" />
+            <input type="text" value={topic} onChange={(e) => setTopic(e.target.value)} placeholder="What do you want to work on?" className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-primary focus:ring-4 focus:ring-primary-light" />
           </div>
 
           {status === "error" && (
             <p className="rounded-xl bg-red-50 p-3 text-sm font-semibold text-red-700">{errorMsg}</p>
           )}
 
-          <button type="submit" disabled={status === "saving"} className="w-full rounded-xl bg-blue-800 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-900 disabled:opacity-50">
+          <button type="submit" disabled={status === "saving"} className="w-full rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-white hover:bg-primary-hover disabled:opacity-50">
             {status === "saving" ? "Scheduling…" : "Schedule"}
           </button>
         </form>

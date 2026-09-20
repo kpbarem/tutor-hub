@@ -75,7 +75,7 @@ export function NotificationBell({ profileId, initialNotifications }: { profileI
             <div className="flex items-center justify-between border-b border-slate-100 p-4">
               <p className="font-semibold">Notifications</p>
               {unreadCount > 0 && (
-                <button onClick={handleMarkAllRead} className="flex items-center gap-1 text-xs font-semibold text-blue-800 hover:text-blue-900">
+                <button onClick={handleMarkAllRead} className="flex items-center gap-1 text-xs font-semibold text-primary hover:text-primary-hover">
                   <Check size={14} /> Mark all read
                 </button>
               )}
@@ -89,7 +89,7 @@ export function NotificationBell({ profileId, initialNotifications }: { profileI
                     key={n.id}
                     href={n.link || "/dashboard"}
                     onClick={() => handleItemClick(n)}
-                    className={"block border-b border-slate-50 p-4 text-sm hover:bg-slate-50 " + (!n.read_at ? "bg-blue-50/50" : "")}
+                    className={"block border-b border-slate-50 p-4 text-sm hover:bg-slate-50 " + (!n.read_at ? "bg-primary-light/50" : "")}
                   >
                     <div className="flex items-start gap-2">
                       {!n.read_at && <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-blue-600" />}

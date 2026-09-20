@@ -18,7 +18,7 @@ export default async function EditStudentPage({ params }: { params: Promise<{ id
 
     return (
         <div className="mx-auto max-w-2xl">
-            <Link href={`/dashboard/students/${id}`} className="text-sm font-semibold text-blue-800 hover:text-blue-900">
+            <Link href={`/dashboard/students/${id}`} className="text-sm font-semibold text-primary hover:text-primary-hover">
                 ← Back to student
             </Link>
             <h1 className="mt-4 text-3xl font-bold">Edit {student.name}</h1>
@@ -31,14 +31,14 @@ export default async function EditStudentPage({ params }: { params: Promise<{ id
                         <label className="block text-sm font-semibold text-slate-700">Full name</label>
                         <input
                             name="name" type="text" required defaultValue={student.name}
-                            className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100"
+                            className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-primary focus:ring-4 focus:ring-primary-light"
                         />
                     </div>
                     <div>
                         <label className="block text-sm font-semibold text-slate-700">Email</label>
                         <input
                             name="email" type="email" required defaultValue={student.email}
-                            className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100"
+                            className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-primary focus:ring-4 focus:ring-primary-light"
                         />
                     </div>
                     <div>
@@ -50,14 +50,14 @@ export default async function EditStudentPage({ params }: { params: Promise<{ id
                             <label className="block text-sm font-semibold text-slate-700">Language</label>
                             <input
                                 name="language" type="text" defaultValue={student.language ?? ""}
-                                className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100"
+                                className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-primary focus:ring-4 focus:ring-primary-light"
                             />
                         </div>
                         <div>
                             <label className="block text-sm font-semibold text-slate-700">Level</label>
                             <input
                                 name="level" type="text" defaultValue={student.level ?? ""}
-                                className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100"
+                                className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-primary focus:ring-4 focus:ring-primary-light"
                             />
                         </div>
                     </div>
@@ -65,7 +65,7 @@ export default async function EditStudentPage({ params }: { params: Promise<{ id
                         <label className="block text-sm font-semibold text-slate-700">Goals</label>
                         <textarea
                             name="goals" rows={3} defaultValue={student.goals ?? ""}
-                            className="mt-2 w-full resize-none rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100"
+                            className="mt-2 w-full resize-none rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-primary focus:ring-4 focus:ring-primary-light"
                         />
                     </div>
 
@@ -73,7 +73,7 @@ export default async function EditStudentPage({ params }: { params: Promise<{ id
                         <Link href={`/dashboard/students/${id}`} className="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50">
                             Cancel
                         </Link>
-                        <button type="submit" className="rounded-xl bg-blue-800 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-900">
+                        <button type="submit" className="rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-white hover:bg-primary-hover">
                             Save changes
                         </button>
                     </div>

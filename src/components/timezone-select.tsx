@@ -14,7 +14,7 @@ export function TimezoneSelect({ name, defaultValue }: { name: string; defaultVa
     <select
       name={name}
       defaultValue={defaultValue || "UTC"}
-      className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100"
+      className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-primary focus:ring-4 focus:ring-primary-light"
     >
       {timezones.map((tz) => (
         <option key={tz} value={tz}>{tz.replace(/_/g, " ")}</option>

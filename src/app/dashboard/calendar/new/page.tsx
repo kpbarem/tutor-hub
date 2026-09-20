@@ -16,7 +16,7 @@ export default async function NewLessonPage() {
   return (
     <div className="mx-auto max-w-2xl">
       <div>
-        <Link href="/dashboard/calendar" className="text-sm font-semibold text-blue-800 hover:text-blue-900">
+        <Link href="/dashboard/calendar" className="text-sm font-semibold text-primary hover:text-primary-hover">
           ← Back to calendar
         </Link>
         <h1 className="mt-4 text-3xl font-bold text-slate-900">Schedule lesson</h1>
@@ -27,7 +27,7 @@ export default async function NewLessonPage() {
         {!students || students.length === 0 ? (
           <p className="text-sm text-slate-500">
             You need at least one student before you can schedule a lesson.{" "}
-            <Link href="/dashboard/students/new" className="font-semibold text-blue-800">
+            <Link href="/dashboard/students/new" className="font-semibold text-primary">
               Add a student
             </Link>
             .

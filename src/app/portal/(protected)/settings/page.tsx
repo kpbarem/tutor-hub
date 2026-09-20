@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getStudentRecord } from "@/lib/get-student-record";
 import { TimezoneForm } from "@/components/timezone-form";
 import { updateStudentTimezone } from "./actions";
-
+import { ThemePicker } from "@/components/theme-picker";
 
 export default async function PortalSettingsPage() {
     const supabase = await createClient();
@@ -15,6 +15,13 @@ export default async function PortalSettingsPage() {
         .from("students")
         .select("timezone")
         .eq("id", student.id)
+        .single();
+
+    const { data: { user } } = await supabase.auth.getUser();
+    const { data: profile } = await supabase
+        .from("profiles")
+        .select("theme")
+        .eq("id", user!.id)
         .single();
 
     return (
@@ -30,6 +37,14 @@ export default async function PortalSettingsPage() {
                 <h2 className="font-semibold">Your timezone</h2>
                 <p className="mt-1 text-sm text-slate-500">Lesson times will display in this timezone.</p>
                 <TimezoneForm defaultValue={fullStudent?.timezone} action={updateStudentTimezone} />
+            </div>
+
+            <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <h2 className="font-semibold">Theme</h2>
+                <p className="mt-1 text-sm text-slate-500">Pick an accent color for your portal.</p>
+                <div className="mt-4">
+                    <ThemePicker defaultValue={profile?.theme} />
+                </div>
             </div>
         </div>
     );

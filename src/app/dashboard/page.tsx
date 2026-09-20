@@ -60,7 +60,7 @@ export default async function DashboardPage() {
     <div className="mx-auto max-w-7xl space-y-7">
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div>
-          <p className="text-sm font-medium text-blue-800">{formatInTimezone(new Date(), tutorTimezone, { weekday: "long", month: "long", day: "numeric" })}</p>
+          <p className="text-sm font-medium text-primary">{formatInTimezone(new Date(), tutorTimezone, { weekday: "long", month: "long", day: "numeric" })}</p>
           <h1 className="mt-1 text-3xl font-bold tracking-tight">
             Good morning, {profile?.display_name ?? "there"}
           </h1>
@@ -68,7 +68,7 @@ export default async function DashboardPage() {
         </div>
         <Link
           href="/dashboard/calendar/new"
-          className="inline-flex items-center gap-2 rounded-xl bg-blue-800 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-900"
+          className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-white hover:bg-primary-hover"
         >
           <CalendarPlus size={18} /> Schedule lesson
         </Link>
@@ -84,7 +84,7 @@ export default async function DashboardPage() {
           <div key={label as string} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             <div className="flex items-center justify-between">
               <p className="text-sm font-medium text-slate-500">{label as string}</p>
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-blue-50 text-blue-800">
+              <span className="grid h-9 w-9 place-items-center rounded-xl bg-primary-light text-primary">
                 <Icon size={18} />
               </span>
             </div>
@@ -101,7 +101,7 @@ export default async function DashboardPage() {
               <h2 className="font-semibold">Upcoming lessons</h2>
               <p className="mt-1 text-sm text-slate-500">Your next scheduled sessions</p>
             </div>
-            <Link href="/dashboard/calendar" className="text-sm font-semibold text-blue-800">
+            <Link href="/dashboard/calendar" className="text-sm font-semibold text-primary">
               View calendar
             </Link>
           </div>
@@ -141,7 +141,7 @@ export default async function DashboardPage() {
                         Confirmed
                       </span>
                       {lesson.video_room_url && (
-                        <Link href={`/dashboard/lessons/${lesson.id}/call`} className="text-xs font-semibold text-blue-800 hover:text-blue-900">
+                        <Link href={`/dashboard/lessons/${lesson.id}/call`} className="text-xs font-semibold text-primary hover:text-primary-hover">
                           Join call →
                         </Link>
                       )}
@@ -159,7 +159,7 @@ export default async function DashboardPage() {
               <h2 className="font-semibold">Students</h2>
               <p className="mt-1 text-sm text-slate-500">Recent activity</p>
             </div>
-            <Link href="/dashboard/students" className="text-sm font-semibold text-blue-800">
+            <Link href="/dashboard/students" className="text-sm font-semibold text-primary">
               View all
             </Link>
           </div>
@@ -173,7 +173,7 @@ export default async function DashboardPage() {
                   href={`/dashboard/students/${student.id}`}
                   className="flex items-center gap-3 rounded-xl p-3 hover:bg-slate-50"
                 >
-                  <span className="grid h-10 w-10 place-items-center rounded-full bg-blue-100 text-xs font-bold text-blue-900">
+                  <span className="grid h-10 w-10 place-items-center rounded-full bg-primary-light text-xs font-bold text-primary-hover">
                     {student.avatar}
                   </span>
                   <div className="min-w-0 flex-1">

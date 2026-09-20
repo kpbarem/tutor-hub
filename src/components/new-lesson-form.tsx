@@ -31,7 +31,7 @@ export function NewLessonForm({ students }: { students: { id: string; name: stri
           id="studentId"
           name="studentId"
           required
-          className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100"
+          className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-primary focus:ring-4 focus:ring-primary-light"
         >
           {students.map((s) => (
             <option key={s.id} value={s.id}>{s.name}</option>
@@ -47,7 +47,7 @@ export function NewLessonForm({ students }: { students: { id: string; name: stri
         </label>
         <select
           id="duration" name="duration" defaultValue="60"
-          className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100"
+          className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-primary focus:ring-4 focus:ring-primary-light"
         >
           <option value="30">30 minutes</option>
           <option value="45">45 minutes</option>
@@ -62,7 +62,7 @@ export function NewLessonForm({ students }: { students: { id: string; name: stri
         </label>
         <input
           id="topic" name="topic" type="text" placeholder="Conversational practice"
-          className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100"
+          className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-primary focus:ring-4 focus:ring-primary-light"
         />
       </div>
 
@@ -74,7 +74,7 @@ export function NewLessonForm({ students }: { students: { id: string; name: stri
         <Link href="/dashboard/calendar" className="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50">
           Cancel
         </Link>
-        <button type="submit" disabled={status === "saving"} className="rounded-xl bg-blue-800 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-900 disabled:opacity-50">
+        <button type="submit" disabled={status === "saving"} className="rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-white hover:bg-primary-hover disabled:opacity-50">
           {status === "saving" ? "Scheduling…" : "Schedule lesson"}
         </button>
       </div>

@@ -33,7 +33,7 @@ export default async function PortalPage() {
             <div className="grid gap-4 sm:grid-cols-2">
                 <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
                     <div className="flex items-center gap-3">
-                        <span className="grid h-10 w-10 place-items-center rounded-xl bg-blue-50 text-blue-800"><CalendarDays size={18} /></span>
+                        <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary-light text-primary"><CalendarDays size={18} /></span>
                         <p className="font-semibold">Next lesson</p>
                     </div>
                     <p className="mt-3 text-sm text-slate-600">
@@ -44,7 +44,7 @@ export default async function PortalPage() {
                     {upcomingLessons && upcomingLessons.length > 0 && upcomingLessons[0].video_room_url && (
                         <Link
                             href={`/portal/lessons/${upcomingLessons[0].id}/call`}
-                            className="mt-3 inline-block text-sm font-semibold text-blue-800 hover:text-blue-900"
+                            className="mt-3 inline-block text-sm font-semibold text-primary hover:text-primary-hover"
                         >
                             Join call →
                         </Link>
@@ -57,7 +57,7 @@ export default async function PortalPage() {
                         <p className="font-semibold">Balance due</p>
                     </div>
                     <p className="mt-3 text-2xl font-bold">${(outstandingCents / 100).toFixed(2)}</p>
-                    <Link href="/portal/payments" className="mt-2 inline-block text-sm font-semibold text-blue-800 hover:text-blue-900">
+                    <Link href="/portal/payments" className="mt-2 inline-block text-sm font-semibold text-primary hover:text-primary-hover">
                         Make a payment →
                     </Link>
                 </div>
@@ -88,7 +88,7 @@ export default async function PortalPage() {
                                         {formatInTimezone(new Date(lesson.starts_at), student.timezone, { hour: "numeric", minute: "2-digit" })}
                                     </p>
                                     {lesson.video_room_url && (
-                                        <Link href={`/portal/lessons/${lesson.id}/call`} className="text-xs font-semibold text-blue-800 hover:text-blue-900">
+                                        <Link href={`/portal/lessons/${lesson.id}/call`} className="text-xs font-semibold text-primary hover:text-primary-hover">
                                             Join call →
                                         </Link>
                                     )}
@@ -111,7 +111,7 @@ export default async function PortalPage() {
 
             <Link
                 href="/portal/messages"
-                className="flex items-center justify-center gap-2 rounded-2xl bg-blue-800 px-4 py-4 text-sm font-semibold text-white hover:bg-blue-900"
+                className="flex items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-4 text-sm font-semibold text-white hover:bg-primary-hover"
             >
                 <MessageCircle size={18} /> Message your tutor
             </Link>

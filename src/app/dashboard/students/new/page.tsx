@@ -8,7 +8,7 @@ export default function NewStudentPage() {
       <div>
         <Link
           href="/dashboard/students"
-          className="text-sm font-semibold text-blue-800 hover:text-blue-900"
+          className="text-sm font-semibold text-primary hover:text-primary-hover"
         >
           ← Back to students
         </Link>
@@ -29,7 +29,7 @@ export default function NewStudentPage() {
               type="text"
               required
               placeholder="Piper Puppy"
-              className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100"
+              className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-primary focus:ring-4 focus:ring-primary-light"
             />
           </div>
 
@@ -43,7 +43,7 @@ export default function NewStudentPage() {
               type="email"
               required
               placeholder="piper@example.com"
-              className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100"
+              className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-primary focus:ring-4 focus:ring-primary-light"
             />
           </div>
 
@@ -63,7 +63,7 @@ export default function NewStudentPage() {
               name="goals"
               rows={4}
               placeholder="Improve conversational English"
-              className="mt-2 w-full resize-none rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100"
+              className="mt-2 w-full resize-none rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-primary focus:ring-4 focus:ring-primary-light"
             />
           </div>
 
@@ -76,7 +76,7 @@ export default function NewStudentPage() {
             </Link>
             <button
               type="submit"
-              className="rounded-xl bg-blue-800 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-900"
+              className="rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-white hover:bg-primary-hover"
             >
               Save student
             </button>

@@ -71,9 +71,9 @@ export default async function StudentPage({
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      <div className="rounded-2xl border border-blue-900 bg-blue-900 p-6 text-white shadow-sm">
+      <div className="rounded-2xl border border-primary-hover bg-primary-hover p-6 text-white shadow-sm">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
-          <span className="grid h-20 w-20 place-items-center rounded-3xl bg-blue-100 text-xl font-bold text-blue-900">
+          <span className="grid h-20 w-20 place-items-center rounded-3xl bg-primary-light text-xl font-bold text-primary-hover">
             {avatar}
           </span>
           <div className="flex-1">
@@ -96,7 +96,7 @@ export default async function StudentPage({
           </Link>
           <Link
             href={`/dashboard/students/${student.id}/messages`}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-800 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-900"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-hover"
           >
             <MessageCircle size={16} /> Messages
           </Link>
@@ -135,18 +135,18 @@ export default async function StudentPage({
               <input type="hidden" name="studentId" value={student.id} />
               <input
                 name="title" type="text" required placeholder="Assignment title"
-                className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100"
+                className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-4 focus:ring-primary-light"
               />
               <textarea
                 name="description" rows={2} placeholder="Instructions (optional)"
-                className="w-full resize-none rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100"
+                className="w-full resize-none rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-4 focus:ring-primary-light"
               />
               <div className="flex gap-2">
                 <input
                   name="dueDate" type="date"
-                  className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100"
+                  className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-4 focus:ring-primary-light"
                 />
-                <button type="submit" className="ml-auto rounded-xl bg-blue-800 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-900">
+                <button type="submit" className="ml-auto rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-hover">
                   Assign
                 </button>
               </div>
@@ -174,7 +174,7 @@ export default async function StudentPage({
                             href={hw.submissionUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="mt-2 inline-block text-xs font-semibold text-blue-800 hover:text-blue-900"
+                            className="mt-2 inline-block text-xs font-semibold text-primary hover:text-primary-hover"
                           >
                             View submission →
                           </a>
@@ -209,7 +209,7 @@ export default async function StudentPage({
             <h2 className="font-semibold">Account snapshot</h2>
             <div className="mt-5 space-y-4">
               <div className="flex gap-3">
-                <span className="grid h-10 w-10 place-items-center rounded-xl bg-blue-50 text-blue-800"><CalendarDays size={18} /></span>
+                <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary-light text-primary"><CalendarDays size={18} /></span>
                 <div>
                   <p className="text-sm text-slate-500">Next lesson</p>
                   <p className="font-semibold">
@@ -240,9 +240,9 @@ export default async function StudentPage({
             )}
 
             {payment === "link" && url && (
-              <div className="mt-4 space-y-2 rounded-xl bg-blue-50 p-4">
-                <p className="text-sm font-semibold text-blue-900">Payment link ready to send</p>
-                <p className="truncate text-xs text-blue-700">{url}</p>
+              <div className="mt-4 space-y-2 rounded-xl bg-primary-light p-4">
+                <p className="text-sm font-semibold text-primary-hover">Payment link ready to send</p>
+                <p className="truncate text-xs text-primary">{url}</p>
                 <CopyLinkButton url={url} />
               </div>
             )}
@@ -256,9 +256,9 @@ export default async function StudentPage({
                 <input
                   id="amount" name="amount" type="number" min="1" step="0.01" required
                   placeholder="50.00"
-                  className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100"
+                  className="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-4 focus:ring-primary-light"
                 />
-                <button type="submit" className="whitespace-nowrap rounded-xl bg-blue-800 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-900">
+                <button type="submit" className="whitespace-nowrap rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-hover">
                   Send request
                 </button>
               </div>
@@ -297,14 +297,14 @@ export default async function StudentPage({
             </div>
           </section>
 
-          <section className="rounded-2xl border border-slate-200 bg-blue-800 p-6 text-white shadow-sm">
-            <p className="text-sm text-blue-100">Student portal</p>
+          <section className="rounded-2xl border border-slate-200 bg-primary p-6 text-white shadow-sm">
+            <p className="text-sm text-white/80">Student portal</p>
             <h2 className="mt-2 text-xl font-bold">Invite {student.name.split(" ")[0]}</h2>
-            <p className="mt-2 text-sm leading-6 text-blue-100">
+            <p className="mt-2 text-sm leading-6 text-white/80">
               Give this student access to upcoming lessons, homework, files, and payment history.
             </p>
             <div className="space-y-2">
-              <p className="text-xs text-blue-100">
+              <p className="text-xs text-white/80">
                 Share this link, and tell them to sign up with: <span className="font-semibold">{student.email}</span>
               </p>
               <CopyLinkButton url={`${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/portal/login`} />

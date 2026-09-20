@@ -16,14 +16,14 @@ export function LessonDateTimeFields() {
                     <label className="block text-sm font-semibold text-slate-700">Date</label>
                     <input
                         type="date" required value={date} onChange={(e) => setDate(e.target.value)}
-                        className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100"
+                        className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-primary focus:ring-4 focus:ring-primary-light"
                     />
                 </div>
                 <div>
                     <label className="block text-sm font-semibold text-slate-700">Start time</label>
                     <input
                         type="time" required value={time} onChange={(e) => setTime(e.target.value)}
-                        className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-blue-700 focus:ring-4 focus:ring-blue-100"
+                        className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-primary focus:ring-4 focus:ring-primary-light"
                     />
                 </div>
             </div>
